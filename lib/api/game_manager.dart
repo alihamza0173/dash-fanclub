@@ -5,23 +5,23 @@ class GameManager {
   Direction? direction;
   bool gameOver = false;
 
-  increaseScore() {
+  void increaseScore() {
     score += 1;
   }
 
-  resetScore() {
+  void resetScore() {
     score = 0;
   }
 
-  releaseControl() {
+  void releaseControl() {
     direction = null;
   }
 
-  setDirection(Direction dashDirection) {
+  void setDirection(Direction dashDirection) {
     direction = dashDirection;
   }
 
-  setGameOver(bool isOver) {
+  void setGameOver(bool isOver) {
     gameOver = isOver;
   }
 }

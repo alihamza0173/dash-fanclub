@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import '../../api/api.dart';
 
 class SingleOptionPicker<T extends SelectableOption> extends StatelessWidget {
-  const SingleOptionPicker(
-      {Key? key, required this.options, required this.setSingleOption})
-      : super(key: key);
+  const SingleOptionPicker({
+    super.key,
+    required this.options,
+    required this.setSingleOption,
+  });
 
   final Map<T, int> options;
   final Function(T) setSingleOption;
@@ -20,19 +22,19 @@ class SingleOptionPicker<T extends SelectableOption> extends StatelessWidget {
 }
 
 class OptionsPicker<T extends SelectableOption> extends StatefulWidget {
-  const OptionsPicker(
-      {required this.options,
-      required this.setOption,
-      this.allowsMultiple = false,
-      Key? key})
-      : super(key: key);
+  const OptionsPicker({
+    required this.options,
+    required this.setOption,
+    this.allowsMultiple = false,
+    super.key,
+  });
 
   final Map<T, int> options;
   final Function(Set<T>) setOption;
   final bool allowsMultiple;
 
   @override
-  _OptionsPickerState<T> createState() => _OptionsPickerState<T>();
+  State<OptionsPicker<T>> createState() => _OptionsPickerState<T>();
 }
 
 class _OptionsPickerState<T extends SelectableOption>
@@ -66,12 +68,13 @@ class _OptionsPickerState<T extends SelectableOption>
       );
     });
 
-    List<bool> _activeIndices = List.generate(
-        optionsList.length, (int index) => _selectedOptions.contains(index));
+    List<bool> activeIndices = List.generate(
+      optionsList.length,
+      (int index) => _selectedOptions.contains(index),
+    );
 
     return ToggleButtons(
-      children: textToggles,
-      isSelected: _activeIndices,
+      isSelected: activeIndices,
       onPressed: (int index) {
         setState(() {
           if (!widget.allowsMultiple) {
@@ -96,15 +99,16 @@ class _OptionsPickerState<T extends SelectableOption>
             }
           }
 
-          Set<T> _selectedOptionsNames = {};
+          Set<T> selectedOptionsNames = {};
 
           for (int index in _selectedOptions) {
-            _selectedOptionsNames.add(optionsList[index]);
+            selectedOptionsNames.add(optionsList[index]);
           }
 
-          widget.setOption(_selectedOptionsNames);
+          widget.setOption(selectedOptionsNames);
         });
       },
+      children: textToggles,
     );
   }
 }

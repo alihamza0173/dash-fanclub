@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Whitespace extends StatelessWidget {
-  const Whitespace({this.width = 0.0, this.height = 0.0, Key? key})
-      : super(key: key);
+  const Whitespace({this.width = 0.0, this.height = 0.0, super.key});
 
   final double width;
   final double height;

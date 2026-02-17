@@ -5,7 +5,7 @@ import './news_card.dart';
 // ignore_for_file: avoid_print
 
 class DashUpdater extends StatefulWidget {
-  const DashUpdater({Key? key}) : super(key: key);
+  const DashUpdater({super.key});
 
   @override
   State<DashUpdater> createState() => _DashUpdater();
@@ -31,18 +31,19 @@ class _DashUpdater extends State<DashUpdater> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: _dashUpdates.length,
-        itemBuilder: (BuildContext context, int index) {
-          return NewsCard(
-            id: _dashUpdates[index]["id"],
-            author: _dashUpdates[index]["author"],
-            image: _dashUpdates[index]["image"],
-            content: _dashUpdates[index]["content"],
-            authorImage: _dashUpdates[index]["authorImage"],
-            comments: _dashUpdates[index]["comments"],
-            postComment: postComment,
-          );
-        });
+      padding: const EdgeInsets.all(8),
+      itemCount: _dashUpdates.length,
+      itemBuilder: (BuildContext context, int index) {
+        return NewsCard(
+          id: _dashUpdates[index]["id"],
+          author: _dashUpdates[index]["author"],
+          image: _dashUpdates[index]["image"],
+          content: _dashUpdates[index]["content"],
+          authorImage: _dashUpdates[index]["authorImage"],
+          comments: _dashUpdates[index]["comments"],
+          postComment: postComment,
+        );
+      },
+    );
   }
 }

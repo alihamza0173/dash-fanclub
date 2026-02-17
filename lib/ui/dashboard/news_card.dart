@@ -6,7 +6,7 @@ import 'package:dash_fanclub_app/ui/shared/shared.dart';
 
 class NewsCard extends StatefulWidget {
   const NewsCard({
-    Key? key,
+    super.key,
     required this.id,
     required this.author,
     required this.image,
@@ -14,7 +14,7 @@ class NewsCard extends StatefulWidget {
     required this.authorImage,
     required this.comments,
     required this.postComment,
-  }) : super(key: key);
+  });
 
   final int id;
   final String author;
@@ -47,23 +47,12 @@ class _NewsCard extends State<NewsCard> {
     return Card(
       child: Column(
         children: [
-          PostBar(
-            author: widget.author,
-            authorImage: widget.authorImage,
-          ),
+          PostBar(author: widget.author, authorImage: widget.authorImage),
           PostImage(doubleTap: likePost, image: widget.image),
-          const Whitespace(
-            height: 10,
-          ),
-          Caption(
-            captionText: widget.content,
-          ),
-          const Whitespace(
-            height: 10,
-          ),
-          Comments(
-            commentData: widget.comments,
-          ),
+          const Whitespace(height: 10),
+          Caption(captionText: widget.content),
+          const Whitespace(height: 10),
+          Comments(commentData: widget.comments),
           Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
@@ -80,8 +69,7 @@ class _NewsCard extends State<NewsCard> {
 }
 
 class PostBar extends StatelessWidget {
-  const PostBar({this.authorImage = "", this.author = "", Key? key})
-      : super(key: key);
+  const PostBar({this.authorImage = "", this.author = "", super.key});
 
   final String authorImage;
   final String author;
@@ -105,8 +93,8 @@ class PostBar extends StatelessWidget {
                   )
                 : CircleAvatar(
                     backgroundColor: Colors.brown.shade800,
-                    child: const Text("IN"),
                     radius: 22,
+                    child: const Text("IN"),
                   ),
           ),
           Expanded(
@@ -123,8 +111,7 @@ class PostBar extends StatelessWidget {
 }
 
 class PostImage extends StatelessWidget {
-  const PostImage({required this.doubleTap, this.image = '', Key? key})
-      : super(key: key);
+  const PostImage({required this.doubleTap, this.image = '', super.key});
 
   final Function doubleTap;
   final String image;
@@ -132,16 +119,11 @@ class PostImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 0,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
       child: image != ''
           ? GestureDetector(
               onDoubleTap: () => {doubleTap()},
-              child: Image(
-                image: NetworkImage(image),
-              ),
+              child: Image(image: NetworkImage(image)),
             )
           : const Divider(),
     );
@@ -149,7 +131,7 @@ class PostImage extends StatelessWidget {
 }
 
 class Caption extends StatelessWidget {
-  const Caption({required this.captionText, Key? key}) : super(key: key);
+  const Caption({required this.captionText, super.key});
 
   final String captionText;
 
@@ -157,16 +139,13 @@ class Caption extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-      child: Text(
-        captionText,
-        textAlign: TextAlign.left,
-      ),
+      child: Text(captionText, textAlign: TextAlign.left),
     );
   }
 }
 
 class Comments extends StatelessWidget {
-  const Comments({required this.commentData, Key? key}) : super(key: key);
+  const Comments({required this.commentData, super.key});
 
   final List commentData;
 
@@ -175,21 +154,20 @@ class Comments extends StatelessWidget {
     List<Widget> comments = [];
 
     for (int i = 0; i < commentData.length; i++) {
-      comments.add(Comment(
-        author: commentData[i]["author"],
-        commentText: commentData[i]["comment"],
-      ));
+      comments.add(
+        Comment(
+          author: commentData[i]["author"],
+          commentText: commentData[i]["comment"],
+        ),
+      );
     }
 
-    return Column(
-      children: comments,
-    );
+    return Column(children: comments);
   }
 }
 
 class LikeIcon extends StatelessWidget {
-  const LikeIcon({required this.liked, required this.doubleTap, Key? key})
-      : super(key: key);
+  const LikeIcon({required this.liked, required this.doubleTap, super.key});
 
   final bool liked;
   final Function doubleTap;
@@ -199,24 +177,19 @@ class LikeIcon extends StatelessWidget {
     return IconButton(
       onPressed: () => {doubleTap()},
       icon: liked
-          ? const Icon(
-              Icons.favorite,
-              color: Colors.red,
-            )
-          : const Icon(
-              Icons.favorite_outline,
-            ),
+          ? const Icon(Icons.favorite, color: Colors.red)
+          : const Icon(Icons.favorite_outline),
     );
   }
 }
 
 class CommentBox extends StatefulWidget {
-  const CommentBox({required this.addComment, Key? key}) : super(key: key);
+  const CommentBox({required this.addComment, super.key});
 
   final Function addComment;
 
   @override
-  _CommentBoxState createState() => _CommentBoxState();
+  State<CommentBox> createState() => _CommentBoxState();
 }
 
 class _CommentBoxState extends State<CommentBox> {
@@ -226,15 +199,16 @@ class _CommentBoxState extends State<CommentBox> {
   Widget build(BuildContext context) {
     return Expanded(
       child: TextField(
-          controller: _commentController,
-          decoration: InputDecoration.collapsed(
-            hintText: "Add a comment...",
-            hintStyle: TextStyle(color: Colors.blueGrey[400], fontSize: 14),
-          ),
-          onSubmitted: (String text) {
-            widget.addComment(text);
-            _commentController.clear();
-          }),
+        controller: _commentController,
+        decoration: InputDecoration.collapsed(
+          hintText: "Add a comment...",
+          hintStyle: TextStyle(color: Colors.blueGrey[400], fontSize: 14),
+        ),
+        onSubmitted: (String text) {
+          widget.addComment(text);
+          _commentController.clear();
+        },
+      ),
     );
   }
 }

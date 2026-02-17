@@ -7,20 +7,20 @@ import '../../api/game_manager.dart';
 
 GetIt getIt = GetIt.instance;
 
-class ScoreDisplay extends TextComponent with HasGameRef {
+class ScoreDisplay extends TextComponent with HasGameReference {
   ScoreDisplay()
-      : super(
-          text: 'Score: 0',
-          priority: 10,
-          textRenderer: TextPaint(
-            style: const TextStyle(
-              fontSize: 24.0,
-              package: 'GoogleFonts',
-              fontFamily: 'Lobster',
-              color: Color.fromARGB(255, 1, 74, 111),
-            ),
+    : super(
+        text: 'Score: 0',
+        priority: 10,
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 24.0,
+            package: 'GoogleFonts',
+            fontFamily: 'Lobster',
+            color: Color.fromARGB(255, 1, 74, 111),
           ),
-        );
+        ),
+      );
 
   @override
   void update(double dt) {
@@ -28,11 +28,12 @@ class ScoreDisplay extends TextComponent with HasGameRef {
     super.text = 'Score\n${score.toString()}';
   }
 
+  @override
   Future<void> onLoad() async {
     super.onLoad();
 
     super.anchor = Anchor.topRight;
-    super.x = gameRef.size.x - 15;
+    super.x = game.size.x - 15;
     super.y = 15.0;
   }
 }

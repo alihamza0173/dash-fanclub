@@ -4,13 +4,12 @@ import 'package:get_it/get_it.dart';
 
 import './helpers/helpers.dart';
 import '../../api/game_manager.dart';
-import './game_over.dart';
 import './game.dart';
 
 GetIt getIt = GetIt.instance;
 
 class Player extends SpriteComponent
-    with HasGameRef<FlappyDash>, CollisionCallbacks {
+    with HasGameReference<FlappyDash>, CollisionCallbacks {
   Player() : super(size: Vector2.all(75));
 
   bool hasCollided = false;
@@ -35,11 +34,13 @@ class Player extends SpriteComponent
 
   @override
   void onCollision(
-      Set<Vector2> intersectionPoints, PositionComponent other) async {
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) async {
     super.onCollision(intersectionPoints, other);
     print('COLLISION!!');
 
-    gameRef.activateGameOver();
+    game.activateGameOver();
   }
 
   @override
@@ -53,7 +54,7 @@ class Player extends SpriteComponent
 
       velocityVector = Vector2(0, -200);
     } else if (direction == Direction.down) {
-      if (position.y >= gameRef.size.y - size.y) return;
+      if (position.y >= game.size.y - size.y) return;
 
       velocityVector = Vector2(0, 200);
     }
@@ -61,9 +62,10 @@ class Player extends SpriteComponent
     position.add(velocityVector * dt);
   }
 
+  @override
   Future<void> onLoad() async {
     super.onLoad();
     add(CircleHitbox());
-    sprite = await gameRef.loadSprite('game/dash.png');
+    sprite = await game.loadSprite('game/dash.png');
   }
 }

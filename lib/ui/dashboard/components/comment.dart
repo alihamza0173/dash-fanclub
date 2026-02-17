@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Comment extends StatelessWidget {
-  const Comment({required this.author, required this.commentText, Key? key})
-      : super(key: key);
+  const Comment({required this.author, required this.commentText, super.key});
 
   final String author;
   final String commentText;
@@ -22,11 +21,12 @@ class Comment extends StatelessWidget {
                   TextSpan(
                     text: author,
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.secondary),
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                   const TextSpan(text: " "),
-                  TextSpan(text: commentText)
+                  TextSpan(text: commentText),
                 ],
               ),
             ),

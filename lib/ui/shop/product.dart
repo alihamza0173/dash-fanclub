@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dash_fanclub_app/ui/shared/whitespace.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,10 +8,6 @@ import 'package:get_it/get_it.dart';
 import '../../api/bag.dart';
 import '../../api/shop_inventory.dart';
 import '../../api/bag_item.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../api/bag.dart';
-import 'package:get_it/get_it.dart';
 import '../shared/shared.dart';
 import '../../api/api.dart';
 
@@ -21,10 +16,10 @@ GetIt getIt = GetIt.instance;
 class ProductPage extends StatefulWidget {
   final Product product;
 
-  const ProductPage({Key? key, required this.product}) : super(key: key);
+  const ProductPage({super.key, required this.product});
 
   @override
-  _ProductPageState createState() => _ProductPageState();
+  State<ProductPage> createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
@@ -80,7 +75,7 @@ class _ProductPageState extends State<ProductPage> {
     int quantityAvailable = widget.product.sizes[_size] ?? 1;
     quantityAvailableForSize = min(quantityAvailable, 7);
 
-    return WillPopScope(
+    return PopScope(
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -88,15 +83,11 @@ class _ProductPageState extends State<ProductPage> {
             children: [
               ListView(
                 children: [
-                  ProductImageCarousel(
-                    images: widget.product.images,
-                  ),
+                  ProductImageCarousel(images: widget.product.images),
                   Center(
                     child: Text(
                       widget.product.name,
-                      style: GoogleFonts.patuaOne(
-                        fontSize: 24,
-                      ),
+                      style: GoogleFonts.patuaOne(fontSize: 24),
                     ),
                   ),
                   const Whitespace(height: 5),
@@ -114,9 +105,12 @@ class _ProductPageState extends State<ProductPage> {
                   Center(
                     child: SingleOptionPicker<ProductSize>(
                       options: widget.product.sizes.map<ProductSize, int>(
-                          (String name, int quantity) =>
-                              MapEntry<ProductSize, int>(
-                                  ProductSize(name), quantity)),
+                        (String name, int quantity) =>
+                            MapEntry<ProductSize, int>(
+                              ProductSize(name),
+                              quantity,
+                            ),
+                      ),
                       setSingleOption: setSize,
                     ),
                   ),
@@ -134,13 +128,13 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   const SizedBox(height: 15),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 5,
+                    ),
                     child: Text(
                       widget.product.description,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -157,12 +151,11 @@ class _ProductPageState extends State<ProductPage> {
                         children: [
                           const Whitespace(width: 10),
                           QuantityPicker(
-                              quantity: quantity,
-                              maxQuantity: quantityAvailableForSize,
-                              onChanged: setQuantity),
-                          const Whitespace(
-                            width: 20,
+                            quantity: quantity,
+                            maxQuantity: quantityAvailableForSize,
+                            onChanged: setQuantity,
                           ),
+                          const Whitespace(width: 20),
                           AddToBagButton(onTap: addToBag),
                         ],
                       ),
@@ -185,14 +178,13 @@ class _ProductPageState extends State<ProductPage> {
           ),
         ),
       ),
-      onWillPop: () async => false,
+      onPopInvokedWithResult: (didPop, result) => false,
     );
   }
 }
 
 class ProductImageCarousel extends StatelessWidget {
-  const ProductImageCarousel({required this.images, Key? key})
-      : super(key: key);
+  const ProductImageCarousel({required this.images, super.key});
 
   final List<String> images;
 
@@ -222,13 +214,13 @@ class ProductImageCarousel extends StatelessWidget {
 }
 
 class QuantityPicker extends StatelessWidget {
-  const QuantityPicker(
-      {required this.quantity,
-      required this.maxQuantity,
-      required this.onChanged,
-      this.minQuantity = 0,
-      Key? key})
-      : super(key: key);
+  const QuantityPicker({
+    required this.quantity,
+    required this.maxQuantity,
+    required this.onChanged,
+    this.minQuantity = 0,
+    super.key,
+  });
 
   final int quantity;
   final int minQuantity;
@@ -249,7 +241,9 @@ class QuantityPicker extends StatelessWidget {
     return DropdownButton<int>(
       items: quantityDropDownOptions.map<DropdownMenuItem<int>>((int option) {
         return DropdownMenuItem<int>(
-            child: Text(option.toString()), value: option);
+          value: option,
+          child: Text(option.toString()),
+        );
       }).toList(),
       onChanged: (int? newValue) {
         if (newValue is int) {
@@ -262,7 +256,7 @@ class QuantityPicker extends StatelessWidget {
 }
 
 class AddToBagButton extends StatelessWidget {
-  const AddToBagButton({required this.onTap, Key? key}) : super(key: key);
+  const AddToBagButton({required this.onTap, super.key});
 
   final Function onTap;
 
@@ -270,12 +264,13 @@ class AddToBagButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ElevatedButton(
-        child: const Text("Add to Bag"),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-              Theme.of(context).colorScheme.primary),
+          backgroundColor: WidgetStateProperty.all<Color>(
+            Theme.of(context).colorScheme.primary,
+          ),
         ),
         onPressed: () => {onTap()},
+        child: const Text("Add to Bag"),
       ),
     );
   }

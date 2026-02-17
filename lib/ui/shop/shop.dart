@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../../api/shop_inventory.dart';
 import '../../api/bag.dart';
@@ -11,10 +9,10 @@ import 'package:dash_fanclub_app/ui/shared/shared.dart';
 GetIt getIt = GetIt.instance;
 
 class DashShop extends StatefulWidget {
-  const DashShop({Key? key}) : super(key: key);
+  const DashShop({super.key});
 
   @override
-  _DashShopState createState() => _DashShopState();
+  State<DashShop> createState() => _DashShopState();
 }
 
 class _DashShopState extends State<DashShop> {
@@ -30,15 +28,19 @@ class _DashShopState extends State<DashShop> {
 
   void _openProduct(BuildContext context, Product item) async {
     // Push Product page on top of stack
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProductPage(product: item)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProductPage(product: item)),
+    );
 
     getIt<Bag>().outputBag();
   }
 
   void _openBag(BuildContext context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const BagPage()));
+      context,
+      MaterialPageRoute(builder: (context) => const BagPage()),
+    );
   }
 
   @override
@@ -52,9 +54,10 @@ class _DashShopState extends State<DashShop> {
             _openProduct(context, item);
           },
           child: ProductTile(
-              image: item.firstImage,
-              productName: item.name,
-              price: item.price),
+            image: item.firstImage,
+            productName: item.name,
+            price: item.price,
+          ),
         ),
       );
     });
@@ -64,9 +67,7 @@ class _DashShopState extends State<DashShop> {
         Column(
           children: [
             const ShopBar(),
-            ProductGrid(
-              productTiles: productTiles,
-            ),
+            ProductGrid(productTiles: productTiles),
             BagButton(onPressed: _openBag),
           ],
         ),
@@ -77,7 +78,7 @@ class _DashShopState extends State<DashShop> {
 
 // This bar can be stateless for now since it's not functional
 class ShopBar extends StatelessWidget {
-  const ShopBar({Key? key}) : super(key: key);
+  const ShopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -89,19 +90,13 @@ class ShopBar extends StatelessWidget {
             onPressed: () => {},
             child: Row(
               children: const [
-                Icon(
-                  Icons.filter_list,
-                  size: 16,
-                  semanticLabel: "filter",
-                ),
+                Icon(Icons.filter_list, size: 16, semanticLabel: "filter"),
                 Whitespace(width: 10),
                 Text("filter", style: TextStyle(fontSize: 16)),
               ],
             ),
           ),
-          const Whitespace(
-            width: 10,
-          ),
+          const Whitespace(width: 10),
           const Expanded(
             child: SizedBox(
               height: 38,
@@ -109,9 +104,7 @@ class ShopBar extends StatelessWidget {
                 autofocus: false,
                 decoration: InputDecoration(
                   hintText: "Search",
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                  ),
+                  hintStyle: TextStyle(fontSize: 14),
                 ),
               ),
             ),
@@ -123,7 +116,7 @@ class ShopBar extends StatelessWidget {
 }
 
 class ProductGrid extends StatelessWidget {
-  const ProductGrid({required this.productTiles, Key? key}) : super(key: key);
+  const ProductGrid({required this.productTiles, super.key});
 
   final List<Widget> productTiles;
 
@@ -135,15 +128,15 @@ class ProductGrid extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 20,
         padding: const EdgeInsets.all(10),
-        children: productTiles,
         childAspectRatio: 0.7,
+        children: productTiles,
       ),
     );
   }
 }
 
 class BagButton extends StatelessWidget {
-  const BagButton({required this.onPressed, Key? key}) : super(key: key);
+  const BagButton({required this.onPressed, super.key});
 
   final Function onPressed;
 
@@ -165,12 +158,12 @@ class BagButton extends StatelessWidget {
 }
 
 class ProductTile extends StatelessWidget {
-  const ProductTile(
-      {required this.image,
-      required this.productName,
-      required this.price,
-      Key? key})
-      : super(key: key);
+  const ProductTile({
+    required this.image,
+    required this.productName,
+    required this.price,
+    super.key,
+  });
 
   final String image;
   final String productName;
@@ -186,33 +179,24 @@ class ProductTile extends StatelessWidget {
             height: 175,
             child: Hero(
               tag: image,
-              child: Image(
-                image: AssetImage(image),
-                fit: BoxFit.cover,
-              ),
+              child: Image(image: AssetImage(image), fit: BoxFit.cover),
             ),
           ),
-          const Whitespace(
-            height: 10,
-          ),
+          const Whitespace(height: 10),
           Text(
             productName,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
-          const Whitespace(
-            height: 10,
-          ),
+          const Whitespace(height: 10),
           Expanded(
             child: Text(
               "\$${price.toString()}",
               textAlign: TextAlign.left,
               style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
           ),
         ],

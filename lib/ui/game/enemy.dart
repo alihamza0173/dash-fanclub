@@ -6,10 +6,8 @@ import '../../api/game_manager.dart';
 
 GetIt getIt = GetIt.instance;
 
-class Enemy extends SpriteComponent with HasGameRef, CollisionCallbacks {
-  Enemy({
-    Vector2? position,
-  }) : super(size: Vector2.all(50), position: position, priority: 2);
+class Enemy extends SpriteComponent with HasGameReference, CollisionCallbacks {
+  Enemy({super.position}) : super(size: Vector2.all(50), priority: 2);
 
   @override
   void update(double dt) {
@@ -30,13 +28,13 @@ class Enemy extends SpriteComponent with HasGameRef, CollisionCallbacks {
   void onRemove() {
     super.onRemove();
 
-    print('removing ${this.toString()}');
+    print('removing ${toString()}');
   }
 
   @override
   Future<void>? onLoad() async {
     super.onLoad();
-    sprite = await gameRef.loadSprite('game/luggage.png');
+    sprite = await game.loadSprite('game/luggage.png');
     //position = Vector2(gameRef.size.x - 70, gameRef.size.y - 70);
     add(RectangleHitbox());
   }

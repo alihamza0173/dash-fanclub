@@ -8,10 +8,10 @@ import 'package:get_it/get_it.dart';
 GetIt getIt = GetIt.instance;
 
 class BagPage extends StatefulWidget {
-  const BagPage({Key? key}) : super(key: key);
+  const BagPage({super.key});
 
   @override
-  _BagPageState createState() => _BagPageState();
+  State<BagPage> createState() => _BagPageState();
 }
 
 class _BagPageState extends State<BagPage> {
@@ -31,7 +31,8 @@ class _BagPageState extends State<BagPage> {
     shipping =
         12; // lol let's say it's a flat rate for now, assuming there's an api for this too
 
-    tax = subtotal *
+    tax =
+        subtotal *
         .0825; // Assuming the location is TX. There should be a separate API to calculate tax, theoretically.
 
     total = subtotal;
@@ -58,29 +59,23 @@ class _BagPageState extends State<BagPage> {
               children: [
                 const Text(
                   "Shopping Bag",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Text(
                   "${getIt<Bag>().items.length} items",
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 const Divider(),
                 const BagList(),
                 const Divider(),
                 const SizedBox(height: 10),
                 CostCalculations(
-                    subtotal: subtotal,
-                    shipping: shipping,
-                    tax: tax,
-                    total: total),
+                  subtotal: subtotal,
+                  shipping: shipping,
+                  tax: tax,
+                  total: total,
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
@@ -96,7 +91,7 @@ class _BagPageState extends State<BagPage> {
 }
 
 class BagList extends StatelessWidget {
-  const BagList({Key? key}) : super(key: key);
+  const BagList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,11 +104,12 @@ class BagList extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (context, index) {
           return ItemCard(
-              name: items[index].item.name,
-              image: items[index].item.firstImage,
-              size: items[index].size,
-              quantity: items[index].quantity,
-              price: items[index].item.price);
+            name: items[index].item.name,
+            image: items[index].item.firstImage,
+            size: items[index].size,
+            quantity: items[index].quantity,
+            price: items[index].item.price,
+          );
         },
       ),
     );
@@ -121,14 +117,14 @@ class BagList extends StatelessWidget {
 }
 
 class ItemCard extends StatelessWidget {
-  const ItemCard(
-      {required this.image,
-      required this.name,
-      required this.size,
-      required this.price,
-      required this.quantity,
-      Key? key})
-      : super(key: key);
+  const ItemCard({
+    required this.image,
+    required this.name,
+    required this.size,
+    required this.price,
+    required this.quantity,
+    super.key,
+  });
 
   final String image;
   final String name;
@@ -139,67 +135,65 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Row(children: [
-      SizedBox(
-        width: 125,
-        height: 125,
-        child: Image(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
-        ),
-      ),
-      Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
+      child: Row(
+        children: [
+          SizedBox(
+            width: 125,
+            height: 125,
+            child: Image(image: AssetImage(image), fit: BoxFit.cover),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "Size: ${size.toUpperCase()}",
-                textAlign: TextAlign.left,
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    "Qty: ${quantity.toString()}",
-                    textAlign: TextAlign.left,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  const SizedBox(
-                    width: 125,
-                  ),
-                  Text(
-                    "\$${price.toString()}",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
+                ),
+                const SizedBox(height: 10),
+                Text("Size: ${size.toUpperCase()}", textAlign: TextAlign.left),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      "Qty: ${quantity.toString()}",
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(width: 125),
+                    Text(
+                      "\$${price.toString()}",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ],
-          ))
-    ]));
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class CostCalculations extends StatelessWidget {
-  const CostCalculations(
-      {this.subtotal = 0,
-      this.shipping = 0,
-      this.tax = 0,
-      this.total = 0,
-      Key? key})
-      : super(key: key);
+  const CostCalculations({
+    this.subtotal = 0,
+    this.shipping = 0,
+    this.tax = 0,
+    this.total = 0,
+    super.key,
+  });
 
   final double subtotal;
   final double shipping;
@@ -244,7 +238,7 @@ class CostCalculations extends StatelessWidget {
 }
 
 class CheckoutButton extends StatelessWidget {
-  const CheckoutButton({required this.onTap, Key? key}) : super(key: key);
+  const CheckoutButton({required this.onTap, super.key});
 
   final Function onTap;
 
@@ -254,12 +248,12 @@ class CheckoutButton extends StatelessWidget {
       onPressed: () {
         onTap();
       },
-      child: const Text(
-        "Checkout",
-      ),
       style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all(Theme.of(context).colorScheme.primary)),
+        backgroundColor: WidgetStateProperty.all(
+          Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      child: const Text("Checkout"),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:dash_fanclub_app/ui/chat/bubbles.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ import 'dart:math';
 GetIt getIt = GetIt.instance;
 
 class Chat extends StatefulWidget {
-  const Chat({Key? key}) : super(key: key);
+  const Chat({super.key});
 
   @override
   State<Chat> createState() => _ChatState();
@@ -62,8 +61,9 @@ class _ChatState extends State<Chat> {
 
       getMessages();
 
-      Duration fakeNetworkDelay =
-          Duration(milliseconds: (Random().nextInt(26) * 100) + 500);
+      Duration fakeNetworkDelay = Duration(
+        milliseconds: (Random().nextInt(26) * 100) + 500,
+      );
 
       Timer(fakeNetworkDelay, () {
         getIt<ChatManager>().getResponse(inputMessage);
@@ -76,9 +76,10 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(children: [
-        Expanded(
-          child: ListView.builder(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
               controller: scrollController,
               itemCount: messages.length,
               itemBuilder: (context, index) {
@@ -89,7 +90,8 @@ class _ChatState extends State<Chat> {
                     : UserBubble(
                         message: message,
                         userImage:
-                            'https://yt3.ggpht.com/ytc/AKedOLSepRT0gjLvp3HSmlNpdM7GHfwmBj8Cegc1s0mWKQ=s900-c-k-c0x00ffffff-no-rj');
+                            'https://yt3.ggpht.com/ytc/AKedOLSepRT0gjLvp3HSmlNpdM7GHfwmBj8Cegc1s0mWKQ=s900-c-k-c0x00ffffff-no-rj',
+                      );
 
                 String? link = getLink(message);
 
@@ -103,20 +105,22 @@ class _ChatState extends State<Chat> {
                 }
 
                 return text;
-              }),
-        ),
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Start typing',
-            suffixIcon: GestureDetector(
-              child: Icon(Icons.send),
-              onTap: onSend,
+              },
             ),
           ),
-        ),
-      ]),
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Start typing',
+              suffixIcon: GestureDetector(
+                onTap: onSend,
+                child: Icon(Icons.send),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:flame/components.dart';
 import './game.dart';
 import './enemy.dart';
 
-class EnemyManager extends Component with HasGameRef<FlappyDash> {
+class EnemyManager extends Component with HasGameReference<FlappyDash> {
   late Timer _timer;
   final Random random = Random();
 
@@ -14,8 +14,10 @@ class EnemyManager extends Component with HasGameRef<FlappyDash> {
 
   void _spawnEnemy() {
     Enemy enemy = Enemy(
-      position: Vector2(gameRef.size.x,
-          random.nextInt(gameRef.size.y.floor() - 70).toDouble()),
+      position: Vector2(
+        game.size.x,
+        random.nextInt(game.size.y.floor() - 70).toDouble(),
+      ),
     );
 
     add(enemy);

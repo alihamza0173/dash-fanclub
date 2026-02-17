@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 
 class LinkBubble extends StatelessWidget {
-  const LinkBubble({Key? key, required this.link}) : super(key: key);
+  const LinkBubble({super.key, required this.link});
 
   final String link;
 

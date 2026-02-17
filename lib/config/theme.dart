@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 ThemeData myDashTheme = ThemeData(
   colorScheme: const ColorScheme(
     primary: Color.fromRGBO(0, 169, 224, 1.0),
-    primaryVariant: Color.fromRGBO(0, 119, 200, 1.0),
+    primaryContainer: Color.fromRGBO(0, 119, 200, 1.0),
     secondary: Color.fromRGBO(29, 79, 145, 1.0),
-    secondaryVariant: Color.fromRGBO(198, 218, 231, 1.0),
+    secondaryContainer: Color.fromRGBO(198, 218, 231, 1.0),
     error: Color(0xb71c1cff),
     surface: Color.fromRGBO(255, 255, 255, 1.0),
     onPrimary: Color.fromRGBO(255, 255, 255, 1.0),

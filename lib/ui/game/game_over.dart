@@ -1,30 +1,30 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:dash_fanclub_app/ui/game/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../api/game_manager.dart';
-
 GetIt getIt = GetIt.instance;
 
-class GameOver extends TextComponent with HasGameRef<FlappyDash> {
+class GameOver extends TextComponent with HasGameReference<FlappyDash> {
   GameOver()
-      : super(
-          text: 'GAME OVER',
-          priority: 10,
-          textRenderer: TextPaint(
-            style: const TextStyle(
-              backgroundColor: Color.fromARGB(255, 199, 13, 0),
-              color: Colors.white,
-              fontSize: 24.0,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 24,
-              package: 'GoogleFonts',
-              fontFamily: 'Lobster',
-            ),
+    : super(
+        text: 'GAME OVER',
+        priority: 10,
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            backgroundColor: Color.fromARGB(255, 199, 13, 0),
+            color: Colors.white,
+            fontSize: 24.0,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 24,
+            package: 'GoogleFonts',
+            fontFamily: 'Lobster',
           ),
-        );
+        ),
+      );
 
   @override
   void onMount() {

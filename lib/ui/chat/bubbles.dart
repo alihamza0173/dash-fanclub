@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 
 class DashBubble extends StatelessWidget {
-  const DashBubble({Key? key, required this.message}) : super(key: key);
+  const DashBubble({super.key, required this.message});
 
   final String message;
 
@@ -17,25 +17,25 @@ class DashBubble extends StatelessWidget {
       ),
     );
 
-    Widget text = Row(children: [
-      SizedBox(
+    Widget text = Row(
+      children: [
+        SizedBox(
+          width: 50,
           child: Padding(
-              padding: EdgeInsets.all(5),
-              child: Image.asset(
-                'assets/images/dash.png',
-                fit: BoxFit.cover,
-              )),
-          width: 50),
-      textBubble,
-    ]);
+            padding: EdgeInsets.all(5),
+            child: Image.asset('assets/images/dash.png', fit: BoxFit.cover),
+          ),
+        ),
+        textBubble,
+      ],
+    );
 
     return text;
   }
 }
 
 class UserBubble extends StatelessWidget {
-  const UserBubble({Key? key, required this.message, required this.userImage})
-      : super(key: key);
+  const UserBubble({super.key, required this.message, required this.userImage});
 
   final String message;
   final String userImage;
@@ -51,21 +51,21 @@ class UserBubble extends StatelessWidget {
       ),
     );
 
-    Widget text = Row(children: [
-      textBubble,
-      SizedBox(
+    Widget text = Row(
+      children: [
+        textBubble,
+        SizedBox(
+          width: 50,
           child: Padding(
             padding: EdgeInsets.all(5),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50.0),
-              child: Image.network(
-                userImage,
-                fit: BoxFit.cover,
-              ),
+              child: Image.network(userImage, fit: BoxFit.cover),
             ),
           ),
-          width: 50),
-    ]);
+        ),
+      ],
+    );
 
     return text;
   }

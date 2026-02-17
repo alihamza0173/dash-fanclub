@@ -1,33 +1,27 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flame/collisions.dart';
-import 'package:flame/input.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/text.dart';
-import 'package:get_it/get_it.dart';
 
 import 'helpers/helpers.dart';
 import 'enemy.dart';
 import './enemy_manager.dart';
-import './crate.dart';
 import './player.dart';
-import './world.dart';
+import 'game_world.dart';
 import './score.dart';
 import '../../api/game_manager.dart';
 import './game_over.dart';
 
 GetIt getIt = GetIt.instance;
 
-class FlappyDash extends FlameGame
-    with KeyboardEvents, HasCollisionDetection, HasTappables {
+class FlappyDash extends FlameGame with KeyboardEvents, HasCollisionDetection {
   FlappyDash({super.children});
   late Player dash = Player();
   //late Crate myCrate;
-  late World _world = World();
+  late final GameWorld _world = GameWorld();
   EnemyManager enemyManager = EnemyManager();
   ScoreDisplay scoreDisplay = ScoreDisplay();
   StartGameButton startButton = StartGameButton();
@@ -37,14 +31,14 @@ class FlappyDash extends FlameGame
 
   @override
   KeyEventResult onKeyEvent(
-    RawKeyEvent event,
+    KeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
-    if (event is RawKeyUpEvent) {
+    if (event is KeyUpEvent) {
       getIt<GameManager>().releaseControl();
     }
 
-    final bool isKeyDown = event is RawKeyDownEvent;
+    final bool isKeyDown = event is KeyDownEvent;
 
     if (isKeyDown) {
       if (keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
@@ -174,164 +168,164 @@ class Game extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
-        color: Colors.deepPurple,
-      ),
-      Padding(
-        padding: const EdgeInsets.all(0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 350,
-              child: GameWidget(
-                game: game,
-                overlayBuilderMap: {
-                  'GameOver': (BuildContext context, FlappyDash game) {
-                    return const Center(
-                      heightFactor: 5,
-                      child: Text(
-                        'GAME OVER',
-                        style: TextStyle(
+    return Stack(
+      children: [
+        Container(color: Colors.deepPurple),
+        Padding(
+          padding: const EdgeInsets.all(0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 350,
+                child: GameWidget(
+                  game: game,
+                  overlayBuilderMap: {
+                    'GameOver': (BuildContext context, FlappyDash game) {
+                      return const Center(
+                        heightFactor: 5,
+                        child: Text(
+                          'GAME OVER',
+                          style: TextStyle(
                             backgroundColor: Colors.red,
                             color: Colors.white,
                             fontSize: 42,
                             fontWeight: FontWeight.w600,
-                            letterSpacing: 12),
+                            letterSpacing: 12,
+                          ),
+                        ),
+                      );
+                    },
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 25, 15, 0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTapDown: (TapDownDetails details) => {
+                        getIt<GameManager>().setDirection(Direction.up),
+                      },
+                      onTapUp: (tapUpDetails) => {
+                        getIt<GameManager>().releaseControl(),
+                      },
+                      child: Container(
+                        height: 100,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_drop_up,
+                          size: 48,
+                          color: Colors.white,
+                        ),
                       ),
-                    );
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 25, 15, 0),
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTapDown: (TapDownDetails details) =>
-                        {getIt<GameManager>().setDirection(Direction.up)},
-                    onTapUp: (TapUpDetails) =>
-                        {getIt<GameManager>().releaseControl()},
-                    child: Container(
-                      height: 100,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: const Icon(Icons.arrow_drop_up,
-                          size: 48, color: Colors.white),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
-                    onTapDown: (TapDownDetails details) =>
-                        {getIt<GameManager>().setDirection(Direction.down)},
-                    onTapUp: (TapUpDetails details) =>
-                        {getIt<GameManager>().releaseControl()},
-                    child: Container(
-                      height: 100,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTapDown: (TapDownDetails details) => {
+                        getIt<GameManager>().setDirection(Direction.down),
+                      },
+                      onTapUp: (TapUpDetails details) => {
+                        getIt<GameManager>().releaseControl(),
+                      },
+                      child: Container(
+                        height: 100,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
                           color: Colors.blue,
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: Icon(Icons.arrow_drop_down,
-                          size: 48, color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          size: 48,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
 class StartGameButton extends SpriteComponent
-    with HasGameRef<FlappyDash>, Tappable {
-  StartGameButton()
-      : super(
-          size: Vector2(150, 76),
-          priority: 25,
-        );
+    with HasGameReference<FlappyDash>, TapCallbacks {
+  StartGameButton() : super(size: Vector2(150, 76), priority: 25);
 
   @override
-  bool onTapDown(TapDownInfo info) {
-    gameRef.resumeEngine();
+  void onTapDown(TapDownEvent event) {
+    game.resumeEngine();
 
-    gameRef.addPauseButton();
+    game.addPauseButton();
 
     removeFromParent();
-
-    return true;
   }
 
   @override
   void onMount() {
     // TODO: implement onMount
     super.onMount();
-    gameRef.pauseEngine();
+    game.pauseEngine();
   }
 
   @override
   Future<void>? onLoad() async {
     super.onLoad();
 
-    sprite = await gameRef.loadSprite('game/start_button.png');
+    sprite = await game.loadSprite('game/start_button.png');
 
     //anchor = Anchor.center;
   }
 }
 
 class PauseGameButton extends SpriteComponent
-    with HasGameRef<FlappyDash>, Tappable {
+    with HasGameReference<FlappyDash>, TapCallbacks {
   PauseGameButton()
-      : super(size: Vector2(75, 38), priority: 25, position: Vector2(15, 15));
+    : super(size: Vector2(75, 38), priority: 25, position: Vector2(15, 15));
 
   @override
-  bool onTapDown(TapDownInfo info) {
+  void onTapDown(TapDownEvent event) {
     print('PRINT PAUSE');
 
-    gameRef.addStartButton();
+    game.addStartButton();
 
-    gameRef.startButton.position = Vector2(120, 120);
+    game.startButton.position = Vector2(120, 120);
 
     removeFromParent();
 
-    //gameRef.pauseEngine();
-
-    return true;
+    //game.pauseEngine();
   }
 
   @override
   Future<void>? onLoad() async {
     super.onLoad();
 
-    sprite = await gameRef.loadSprite('game/pause_button.png');
+    sprite = await game.loadSprite('game/pause_button.png');
   }
 }
 
 class RestartGameButton extends SpriteComponent
-    with HasGameRef<FlappyDash>, Tappable {
+    with HasGameReference<FlappyDash>, TapCallbacks {
   RestartGameButton()
-      : super(
-            size: Vector2(150, 76), priority: 25, position: Vector2(120, 160));
+    : super(size: Vector2(150, 76), priority: 25, position: Vector2(120, 160));
 
   @override
-  bool onTapDown(TapDownInfo info) {
-    gameRef.resetGame();
+  void onTapDown(TapDownEvent event) {
+    game.resetGame();
 
     print('CLICK RESTART');
 
-    //gameRef.resumeEngine();
+    //game.resumeEngine();
 
     removeFromParent();
-
-    return true;
   }
 
   @override
@@ -344,6 +338,6 @@ class RestartGameButton extends SpriteComponent
   Future<void>? onLoad() async {
     super.onLoad();
 
-    sprite = await gameRef.loadSprite('game/restart_button.png');
+    sprite = await game.loadSprite('game/restart_button.png');
   }
 }
