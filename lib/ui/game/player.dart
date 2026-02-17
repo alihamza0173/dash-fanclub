@@ -39,7 +39,7 @@ class Player extends SpriteComponent
   ) async {
     super.onCollision(intersectionPoints, other);
     print('COLLISION!!');
-
+    if (getIt<GameManager>().gameOver) return;
     game.activateGameOver();
   }
 

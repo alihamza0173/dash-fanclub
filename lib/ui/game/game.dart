@@ -109,6 +109,7 @@ class FlappyDash extends FlameGame with KeyboardEvents, HasCollisionDetection {
   }
 
   void activateGameOver() {
+    if (getIt<GameManager>().gameOver) return;
     pauseButton.removeFromParent();
 
     getIt<GameManager>().setGameOver(true);
@@ -134,6 +135,7 @@ class FlappyDash extends FlameGame with KeyboardEvents, HasCollisionDetection {
     dash.position = Vector2(_world.size.x / 8, _world.size.y / 3);
 
     overlays.remove('GameOver');
+    restartButton.removeFromParent();
 
     children.whereType<Enemy>().forEach((enemy) {
       enemy.removeFromParent();
